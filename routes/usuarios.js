@@ -2,6 +2,66 @@ const express = require('express');
 const router = express.Router();
 const { sql, config } = require('../db');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Usuario:
+ *       type: object
+ *       required:
+ *         - Nombre
+ *         - Correo
+ *         - ContrasenaHash
+ *       properties:
+ *         IdUsuario:
+ *           type: integer
+ *           description: ID único del usuario
+ *         Nombre:
+ *           type: string
+ *           maxLength: 100
+ *           description: Nombre del usuario
+ *         Correo:
+ *           type: string
+ *           maxLength: 255
+ *           description: Correo electrónico del usuario
+ *         ContrasenaHash:
+ *           type: string
+ *           maxLength: 256
+ *           description: Hash de la contraseña del usuario
+ *         FechaCreacion:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha de creación del usuario
+ *     Error:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: string
+ *           description: Mensaje de error
+ */
+
+/**
+ * @swagger
+ * /api/usuarios:
+ *   get:
+ *     summary: Obtiene todos los usuarios
+ *     tags: [Usuarios]
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios obtenida exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Usuario'
+ *       500:
+ *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Obtener todos los usuarios
 router.get('/', async (req, res) => {
   try {
@@ -13,6 +73,39 @@ router.get('/', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/usuarios/{id}:
+ *   get:
+ *     summary: Obtiene un usuario por ID
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       404:
+ *         description: Usuario no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Obtener usuario por ID
 router.get('/:id', async (req, res) => {
   try {
@@ -29,6 +122,49 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/usuarios:
+ *   post:
+ *     summary: Crea un nuevo usuario
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - Nombre
+ *               - Correo
+ *               - ContrasenaHash
+ *             properties:
+ *               Nombre:
+ *                 type: string
+ *                 maxLength: 100
+ *                 description: Nombre del usuario
+ *               Correo:
+ *                 type: string
+ *                 maxLength: 255
+ *                 description: Correo electrónico del usuario
+ *               ContrasenaHash:
+ *                 type: string
+ *                 maxLength: 256
+ *                 description: Hash de la contraseña del usuario
+ *     responses:
+ *       201:
+ *         description: Usuario creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       500:
+ *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Crear usuario
 router.post('/', async (req, res) => {
   const { Nombre, Correo, ContrasenaHash } = req.body;
@@ -45,6 +181,65 @@ router.post('/', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/usuarios/{id}:
+ *   put:
+ *     summary: Actualiza un usuario existente
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario a actualizar
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - Nombre
+ *               - Correo
+ *               - ContrasenaHash
+ *             properties:
+ *               Nombre:
+ *                 type: string
+ *                 maxLength: 100
+ *                 description: Nombre del usuario
+ *               Correo:
+ *                 type: string
+ *                 maxLength: 255
+ *                 description: Correo electrónico del usuario
+ *               ContrasenaHash:
+ *                 type: string
+ *                 maxLength: 256
+ *                 description: Hash de la contraseña del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Usuario no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Actualizar usuario
 router.put('/:id', async (req, res) => {
   const { Nombre, Correo, ContrasenaHash } = req.body;
@@ -65,6 +260,42 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/usuarios/{id}:
+ *   delete:
+ *     summary: Elimina un usuario
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario a eliminar
+ *     responses:
+ *       200:
+ *         description: Usuario eliminado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       404:
+ *         description: Usuario no encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error interno del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 // Eliminar usuario
 router.delete('/:id', async (req, res) => {
   try {
