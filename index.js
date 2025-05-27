@@ -3,6 +3,7 @@ const cors = require('cors');
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const usuariosRoutes = require('./routes/usuarios');
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,7 +15,7 @@ const swaggerOptions = {
     info: {
       title: 'API de UsuariosVidal',
       version: '1.0.0',
-      description: 'API REST para gestión de usuarios con operaciones CRUD completas'
+      description: 'API REST para gestión de usuarios con operaciones CRUD completas y sistema de autenticación'
     },
     servers: [
       {
@@ -22,6 +23,15 @@ const swaggerOptions = {
         description: 'Servidor de desarrollo'
       }
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
+    }
   },
   apis: ['./routes/*.js'], // Ruta donde están las anotaciones
 };
@@ -35,6 +45,7 @@ app.use(express.json());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.send('API de UsuariosVidal funcionando - Documentación disponible en /api-docs');

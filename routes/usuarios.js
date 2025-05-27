@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { sql, config } = require('../db');
+const authenticateToken = require('../middleware/auth');
 
 /**
  * @swagger
@@ -307,6 +308,44 @@ router.delete('/:id', async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
     res.json({ message: 'Usuario eliminado correctamente' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * @swagger
+ * /api/usuarios/profile:
+ *   get:
+ *     summary: Obtiene el perfil del usuario autenticado
+ *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Perfil del usuario obtenido exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       401:
+ *         description: Token no válido o no proporcionado
+ *       500:
+ *         description: Error interno del servidor
+ */
+// Obtener perfil del usuario autenticado (ruta protegida)
+router.get('/profile', authenticateToken, async (req, res) => {
+  try {
+    let pool = await sql.connect(config);
+    let result = await pool.request()
+      .input('IdUsuario', sql.Int, req.user.IdUsuario)
+      .query('SELECT IdUsuario, Nombre, Correo, FechaCreacion FROM UsuariosVidal WHERE IdUsuario = @IdUsuario');
+    
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    
+    res.json(result.recordset[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
