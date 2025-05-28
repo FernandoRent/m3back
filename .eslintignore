@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Logs
+logs/
+*.log
+
+# Coverage reports
+coverage/
+
+# Azure specific
+.azure/
+
+# Git
+.git/
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Package files
+package-lock.json
+yarn.lock
+
+# Config files that don't need linting
+web.config
+*.md
+
+# Test files
+tests/
+**/*.test.js
+**/*.spec.js
+jest.config.js 

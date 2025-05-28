@@ -64,7 +64,7 @@ app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
-  res.send('API de UsuariosVidal funcionando - Documentación disponible en /api-docs');
+  res.send('API de UsuariosVidal funcionando - Documentación disponible en /api-docs - Deploy con Publish Profile ✅');
 });
 
 app.listen(PORT, () => {
