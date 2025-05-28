@@ -118,7 +118,7 @@ router.post('/register', async (req, res) => {
       .query('INSERT INTO UsuariosVidal (Nombre, Correo, ContrasenaHash) OUTPUT INSERTED.* VALUES (@Nombre, @Correo, @ContrasenaHash)');
 
     const newUser = result.recordset[0];
-    
+
     // Remover la contraseña de la respuesta
     delete newUser.ContrasenaHash;
 
@@ -126,7 +126,6 @@ router.post('/register', async (req, res) => {
       message: 'Usuario registrado exitosamente',
       usuario: newUser
     });
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -187,8 +186,8 @@ router.post('/login', async (req, res) => {
 
     // Generar JWT token
     const token = jwt.sign(
-      { 
-        IdUsuario: usuario.IdUsuario, 
+      {
+        IdUsuario: usuario.IdUsuario,
         Correo: usuario.Correo,
         Nombre: usuario.Nombre
       },
@@ -204,7 +203,6 @@ router.post('/login', async (req, res) => {
       token: token,
       usuario: usuario
     });
-
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -252,7 +250,6 @@ router.get('/verify', async (req, res) => {
         Nombre: decoded.Nombre
       }
     });
-
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
       return res.status(401).json({ error: 'Token inválido' });
@@ -264,4 +261,4 @@ router.get('/verify', async (req, res) => {
   }
 });
 
-module.exports = router; 
+module.exports = router;

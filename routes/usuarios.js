@@ -340,15 +340,15 @@ router.get('/profile', authenticateToken, async (req, res) => {
     let result = await pool.request()
       .input('IdUsuario', sql.Int, req.user.IdUsuario)
       .query('SELECT IdUsuario, Nombre, Correo, FechaCreacion FROM UsuariosVidal WHERE IdUsuario = @IdUsuario');
-    
+
     if (result.recordset.length === 0) {
       return res.status(404).json({ error: 'Usuario no encontrado' });
     }
-    
+
     res.json(result.recordset[0]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-module.exports = router; 
+module.exports = router;

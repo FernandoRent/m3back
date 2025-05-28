@@ -17,10 +17,10 @@ const authenticateToken = (req, res, next) => {
       }
       return res.status(403).json({ error: 'Token inválido' });
     }
-    
+
     req.user = user;
     next();
   });
 };
 
-module.exports = authenticateToken; 
+module.exports = authenticateToken;

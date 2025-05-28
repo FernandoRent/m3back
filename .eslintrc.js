@@ -2,24 +2,24 @@ module.exports = {
   env: {
     browser: false,
     es2021: true,
-    node: true
+    node: true,
+    jest: true
   },
   extends: [
-    'standard'
+    'eslint:recommended'
   ],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module'
   },
   rules: {
-    // Reglas personalizadas para el proyecto
-    'indent': ['error', 2],
-    'quotes': ['error', 'single'],
-    'semi': ['error', 'always'],
+    // Reglas básicas y compatibles
+    indent: ['error', 2],
+    quotes: ['error', 'single'],
+    semi: ['error', 'always'],
     'no-console': 'warn',
     'no-unused-vars': 'error',
     'no-undef': 'error',
-    'space-before-function-paren': ['error', 'always'],
     'comma-dangle': ['error', 'never'],
     'eol-last': ['error', 'always'],
     'no-trailing-spaces': 'error',
@@ -30,7 +30,6 @@ module.exports = {
     'space-infix-ops': 'error',
     'space-before-blocks': 'error',
     'brace-style': ['error', '1tbs', { allowSingleLine: true }],
-    'camelcase': ['error', { properties: 'never' }],
     'no-multiple-empty-lines': ['error', { max: 1, maxEOF: 1 }],
     'padded-blocks': ['error', 'never']
   },
@@ -45,4 +44,4 @@ module.exports = {
     exports: 'readonly',
     global: 'readonly'
   }
-}; 
+};

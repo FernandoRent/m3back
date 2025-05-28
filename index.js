@@ -19,11 +19,11 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: process.env.NODE_ENV === 'production' 
-          ? 'https://spidersap.azurewebsites.net' 
+        url: process.env.NODE_ENV === 'production'
+          ? 'https://spidersap.azurewebsites.net'
           : `http://localhost:${PORT}`,
-        description: process.env.NODE_ENV === 'production' 
-          ? 'Servidor de producción en Azure' 
+        description: process.env.NODE_ENV === 'production'
+          ? 'Servidor de producción en Azure'
           : 'Servidor de desarrollo'
       }
     ],
@@ -37,7 +37,7 @@ const swaggerOptions = {
       }
     }
   },
-  apis: ['./routes/*.js'], // Ruta donde están las anotaciones
+  apis: ['./routes/*.js'] // Ruta donde están las anotaciones
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
@@ -46,7 +46,7 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 const corsOptions = {
   origin: [
     'http://localhost:3000',
-    'http://localhost:3001', 
+    'http://localhost:3001',
     'https://brave-ocean-018fd0810.6.azurestaticapps.net',
     'https://spidersap.azurewebsites.net'
   ],
@@ -69,4 +69,4 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en puerto ${PORT}`);
-}); 
+});

@@ -15,4 +15,4 @@ const config = {
 module.exports = {
   sql,
   config
-}; 
+};
