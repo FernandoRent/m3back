@@ -6,7 +6,7 @@ const usuariosRoutes = require('./routes/usuarios');
 const authRoutes = require('./routes/auth');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || process.env.WEBSITES_PORT || 3000;
 
 // Configuración de Swagger
 const swaggerOptions = {
@@ -19,8 +19,12 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: `http://localhost:${PORT}`,
-        description: 'Servidor de desarrollo'
+        url: process.env.NODE_ENV === 'production' 
+          ? 'https://spidersap.azurewebsites.net' 
+          : `http://localhost:${PORT}`,
+        description: process.env.NODE_ENV === 'production' 
+          ? 'Servidor de producción en Azure' 
+          : 'Servidor de desarrollo'
       }
     ],
     components: {
@@ -38,7 +42,19 @@ const swaggerOptions = {
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
-app.use(cors());
+// Configuración de CORS para permitir acceso desde el frontend
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001', 
+    'https://brave-ocean-018fd0810.6.azurestaticapps.net',
+    'https://spidersap.azurewebsites.net'
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Ruta para la documentación de Swagger
